@@ -27,6 +27,7 @@ export default function Navbar() {
         background: "rgba(249,249,247,0.85)",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
+        boxShadow: scrolled ? "0 1px 0 rgba(17, 17, 16, 0.04)" : "none",
         transition: "box-shadow 0.2s ease",
       }}
     >

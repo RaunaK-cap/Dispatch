@@ -4,10 +4,14 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/pg": "^8.20.0"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "export": {
+    "./db": "index.ts"
   },
   "dependencies": {
     "express": "^5.2.1",

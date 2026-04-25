@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import StreamVisual from "../bento/StreamVisual";
 import ChannelGrid from "../bento/ChannelGrid";
 import RetryBars from "../bento/RetryBars";
 import KeyList from "../bento/KeyList";
 
-const cellVariants = {
+const cellVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
   visible: (i: number) => ({
     opacity: 1,

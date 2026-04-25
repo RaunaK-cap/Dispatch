@@ -36,8 +36,6 @@ export default function NodeDiagram() {
             <motion.circle
               r={3}
               fill={ch.color}
-              initial={{ offsetDistance: "0%" } as any}
-              animate={{ offsetDistance: ["0%", "100%"] } as any}
               transition={{
                 duration: 2,
                 ease: "linear",
