@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt, { verify, type JwtPayload } from "jsonwebtoken"
+import jwt, { type JwtPayload } from "jsonwebtoken"
 
 interface verifedbody extends JwtPayload {
     userid: string
