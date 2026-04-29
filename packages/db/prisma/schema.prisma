@@ -8,57 +8,65 @@ datasource db {
 }
 
 model users {
-  id           Int                    @id @default(autoincrement())
-  firstname    String
-  lastname     String
-  username     String                 @unique
-  password     String
-  keys         keys[]
-  createdAt    DateTime               @default(now())
-  updatedAt    DateTime               @updatedAt
-  notification notification_Message[]
+  id                  Int                   @id @default(autoincrement())
+  firstname           String
+  lastname            String
+  username            String                @unique
+  password            String
+  notificationmessage notificationmessage[]
+  deliverylogs        deliverylogs[]
+  channelconfig       channelconfig[]
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
 }
 
-model notification_Message {
-  id               Int                @id @default(autoincrement())
-  message          String
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  UserID           Int
-  user             users              @relation(fields: [UserID], references: [id])
-  logs_and_updates logs_and_updates[]
+enum channeltype {
+  DISCORD
+  EMAIL
+  WHATSAPP
+  TELEGRAM
 }
 
-model keys {
-  id            Int      @id @default(autoincrement())
-  discord       String?
-  discordtoken  String?
-  email         String?
-  emailtoken    String
-  whatsappkey   String?
-  whatsapptoken String?
-  otherkey      String
-  othertoken    String?
-  UserID        Int
-  user          users    @relation(fields: [UserID], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+model channelconfig {
+  id        Int         @id @default(autoincrement())
+  channel   channeltype
+  config    Json
+  isactive  Boolean     @default(false)
+  USERID    Int
+  user      users       @relation(fields: [USERID], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
-enum notification {
-  pending
-  processing
-  done
-  failed
-  retrying
+model notificationmessage {
+  id           Int            @id() @default(autoincrement())
+  message      String
+  USERID       Int
+  user         users          @relation(fields: [USERID], references: [id])
+  deliverylogs deliverylogs[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
-model logs_and_updates {
-  id        Int                  @id @default(autoincrement())
-  message   String
-  updates   notification
-  usermsgid Int
-  msg       notification_Message @relation(fields: [usermsgid], references: [id])
-  createdAt DateTime             @default(now())
-  updatedAt DateTime             @updatedAt
+enum deliverystatus {
+  QUEUED
+  PROCESSING
+  DELIVERED
+  FAILED
+  RETYING
+}
+
+model deliverylogs {
+  id         Int                 @id @default(autoincrement())
+  messageID  Int
+  messagesid notificationmessage @relation(fields: [messageID], references: [id])
+  USERID     Int
+  user       users               @relation(fields: [USERID], references: [id])
+  channel    channeltype?
+  status     deliverystatus
+  retrycount Int
+  redisjobID String?
+  latencyMS  Int?
+  createdAt  DateTime            @default(now())
+  updateAt   DateTime            @updatedAt
 }
