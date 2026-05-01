@@ -1,9 +1,11 @@
 import { Router } from "express";
 import usermiddleware from "../middleware/middleware";
-import { content } from "../controllers/content";
+import { config, deliverylogs, notification_message } from "../controllers/content";
 
 const usercontent = Router()
 
-usercontent.post("/content", usermiddleware, content)
+usercontent.post("/content/config", usermiddleware, config)
+usercontent.post("/content/notification", usermiddleware, notification_message)
+usercontent.post("/content/deliverylogs", usermiddleware, deliverylogs)
 
 export default usercontent
