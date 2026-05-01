@@ -7,14 +7,14 @@ datasource db {
   provider = "postgresql"
 }
 
-model users {
+model user {
   id                  Int                   @id @default(autoincrement())
   firstname           String
   lastname            String
   username            String                @unique
   password            String
   notificationmessage notificationmessage[]
-  deliverylogs        deliverylogs[]
+  deliverylogs        deliverylog[]
   channelconfig       channelconfig[]
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
@@ -33,37 +33,39 @@ model channelconfig {
   config    Json
   isactive  Boolean     @default(false)
   USERID    Int
-  user      users       @relation(fields: [USERID], references: [id])
+  user      user        @relation(fields: [USERID], references: [id])
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 }
 
 model notificationmessage {
-  id           Int            @id() @default(autoincrement())
+  id           Int           @id() @default(autoincrement())
   message      String
   USERID       Int
-  user         users          @relation(fields: [USERID], references: [id])
-  deliverylogs deliverylogs[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  user         user          @relation(fields: [USERID], references: [id])
+  deliverylogs deliverylog[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 enum deliverystatus {
+  PENDING
   QUEUED
   PROCESSING
   DELIVERED
+  PARTIALLY_DELIVERED
   FAILED
-  RETYING
+  CANCELLED
 }
 
-model deliverylogs {
+model deliverylog {
   id         Int                 @id @default(autoincrement())
   messageID  Int
   messagesid notificationmessage @relation(fields: [messageID], references: [id])
   USERID     Int
-  user       users               @relation(fields: [USERID], references: [id])
+  user       user                @relation(fields: [USERID], references: [id])
   channel    channeltype?
-  status     deliverystatus
+  status     deliverystatus      @default(PENDING)
   retrycount Int
   redisjobID String?
   latencyMS  Int?
