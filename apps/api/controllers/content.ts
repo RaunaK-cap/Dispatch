@@ -8,10 +8,21 @@ export const config = async (req: Request, res: Response) => {
 
     try {
 
-        const resp = await prisma.channelconfig.create({
-            data: {
-                config: config,
+        const resp = await prisma.channelconfig.upsert({
+            where: {
+                channel_USERID: {
+                    channel: channel,
+                    USERID: Number(req.userID)
+                }
+
+            }, create: {
                 channel: channel,
+                config: config,
+                USERID: Number(req.userID),
+                isactive: true
+
+            }, update: {
+                config: config,
                 USERID: Number(req.userID),
                 isactive: true
             }
