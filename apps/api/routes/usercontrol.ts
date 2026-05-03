@@ -4,8 +4,8 @@ import { config, deliverylogs, notification_message } from "../controllers/conte
 
 const usercontent = Router()
 
-usercontent.post("/content/config", usermiddleware, config)
-usercontent.post("/content/notification", usermiddleware, notification_message)
-usercontent.post("/content/deliverylogs", usermiddleware, deliverylogs)
+usercontent.post("/config", usermiddleware, config)
+usercontent.post("/notification", usermiddleware, notification_message)
+usercontent.post("/deliverylogs", usermiddleware, deliverylogs)
 
 export default usercontent
