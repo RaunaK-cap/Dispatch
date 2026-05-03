@@ -37,7 +37,7 @@ export const notification_message = async (req: Request, res: Response) => {
 
     try {
 
-        const res = await prisma.notificationmessage.create({
+        const response = await prisma.notificationmessage.create({
             data: {
                 USERID: Number(req.userID),
                 message: user_notification_message
@@ -45,7 +45,8 @@ export const notification_message = async (req: Request, res: Response) => {
         })
 
         res.status(200).json({
-            message: "message have been queued "
+            message: "message have been queued ",
+            response
         })
 
     } catch (e) {
@@ -59,7 +60,7 @@ export const notification_message = async (req: Request, res: Response) => {
 export const deliverylogs = async (req: Request, res: Response) => {
     const { messageID, channel, status, retrycount, redisjobID, latencyMS } = req.body
     try {
-        const res = await prisma.deliverylogs.create({
+        const response = await prisma.deliverylog.create({
             data: {
                 USERID: Number(req.userID),
                 messageID: messageID,
@@ -73,7 +74,8 @@ export const deliverylogs = async (req: Request, res: Response) => {
         })
 
         res.status(200).json({
-            message: "logs have been submitted "
+            message: "logs have been submitted ",
+            response
         })
     } catch (error) {
         res.status(400).json({

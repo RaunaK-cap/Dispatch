@@ -12,7 +12,7 @@ export const signup = async (req: Request, res: Response) => {
         return res.status(400).send("invalid inputs")
     }
     try {
-        const response = await prisma.users.upsert({
+        const response = await prisma.user.upsert({
             where: {
                 username: verifiedbody.data?.username
             },
@@ -50,7 +50,7 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     try {
-        const result = await prisma.users.findFirst({
+        const result = await prisma.user.findFirst({
             where: {
                 username: verifiedbody.data.username,
                 password: verifiedbody.data.password
