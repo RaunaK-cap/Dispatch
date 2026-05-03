@@ -9,6 +9,7 @@ export const config = async (req: Request, res: Response) => {
     try {
 
         const resp = await prisma.channelconfig.upsert({
+
             where: {
                 channel_USERID: {
                     channel: channel,
@@ -41,6 +42,34 @@ export const config = async (req: Request, res: Response) => {
 
 }
 
+export const delete_config = async (req: Request, res: Response) => {
+
+    const { id } = req.body
+
+    try {
+
+        const resp = await prisma.channelconfig.delete({
+            where: {
+                id: id
+            }, select: {
+                channel: true,
+                config: true
+            }
+        })
+
+        res.status(200).json({
+            message: "deleted",
+            resp
+        })
+
+    } catch (error) {
+        res.json({
+            message: "eerror while deleting",
+            error
+        })
+    }
+}
+
 
 export const notification_message = async (req: Request, res: Response) => {
 
@@ -68,11 +97,37 @@ export const notification_message = async (req: Request, res: Response) => {
 
 }
 
+export const delete_notification_message = async (req: Request, res: Response) => {
+
+    const { id } = req.body
+    try {
+        const resp = await prisma.notificationmessage.delete({
+            where: {
+                id: id
+            }, select: {
+                deliverylogs: true
+            }
+        })
+
+        res.status(200).json({
+            message: "deleted",
+            resp
+        })
+    } catch (error) {
+        res.status(200).json({
+            message: "error while deleting"
+        })
+    }
+}
+
 export const deliverylogs = async (req: Request, res: Response) => {
+
     const { messageID, channel, status, retrycount, redisjobID, latencyMS } = req.body
+
     try {
         const response = await prisma.deliverylog.create({
             data: {
+
                 USERID: Number(req.userID),
                 messageID: messageID,
                 channel: channel,
@@ -88,6 +143,7 @@ export const deliverylogs = async (req: Request, res: Response) => {
             message: "logs have been submitted ",
             response
         })
+
     } catch (error) {
         res.status(400).json({
             message: "error while saving logs"
