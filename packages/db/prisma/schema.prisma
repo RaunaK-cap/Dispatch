@@ -63,7 +63,7 @@ enum deliverystatus {
 model deliverylog {
   id         Int                 @id @default(autoincrement())
   messageID  Int
-  messagesid notificationmessage @relation(fields: [messageID], references: [id])
+  messagesid notificationmessage @relation(fields: [messageID], references: [id], onDelete: Cascade)
   USERID     Int
   user       user                @relation(fields: [USERID], references: [id])
   channel    channeltype?
