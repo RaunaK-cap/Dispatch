@@ -11,7 +11,8 @@
   },
   "peerDependencies": {
     "typescript": "^5",
-    "db": "*"
+    "db": "*",
+    "redis-queue": "*"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",

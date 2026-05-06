@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
 import { channelConfig } from "../types";
 import { prisma } from "db";
+import { xaddbulk } from "redis-queue";
+import { redispayload } from "./redispayload";
+
 
 export const config = async (req: Request, res: Response) => {
 
@@ -71,6 +74,8 @@ export const delete_config = async (req: Request, res: Response) => {
 }
 
 
+
+
 export const notification_message = async (req: Request, res: Response) => {
 
     const { user_notification_message } = req.body
@@ -84,10 +89,16 @@ export const notification_message = async (req: Request, res: Response) => {
             }
         })
 
+        if (response.id) {
+            await redispayload(response.USERID)
+        }
+
         res.status(200).json({
             message: "message have been queued ",
             response
         })
+
+
 
     } catch (e) {
         res.status(400).json({

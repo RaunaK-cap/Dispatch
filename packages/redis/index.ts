@@ -11,16 +11,20 @@ const client = createClient().on("error", (err) =>
 await client.connect();
 
 
-export async function xaddbulk(notificationData: { channelName: string; key: string, }[]) {
+export async function xaddbulk(notificationData: { channelName: string; config: string, message: string, UserID: string, messageID: string }[]) {
     const pipeline = client.MULTI();
 
-    RootNodesUnavailableError.forEach((data) => {
+    notificationData.forEach((data) => {
         pipeline.xAdd(
             "NOTIFY",
             "*",
             {
-                url: data.url,
-                id: data.id.toString(),
+                channelname: data.channelName,
+                config: data.config,
+                notification_message: data.message,
+                messageID: data.messageID,
+                UserID: data.UserID
+
             },
             {
                 TRIM: {

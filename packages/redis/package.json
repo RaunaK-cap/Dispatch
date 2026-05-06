@@ -1,5 +1,5 @@
 {
-  "name": "redis",
+  "name": "redis-queue",
   "module": "index.ts",
   "type": "module",
   "private": true,
@@ -10,7 +10,7 @@
     "typescript": "^5"
   },
   "exports": {
-    "./Redis_queuing": "./index.ts"
+    ".": "./index.ts"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
