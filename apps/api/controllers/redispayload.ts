@@ -1,11 +1,11 @@
 import { prisma } from "db";
 
 
-export async function redispayload(userid: number) {
+export async function redispayload(USERID: number, message: string, id: number) {
     try {
         const UserData = await prisma.user.findFirst({
             where: {
-                id: userid
+                id: USERID
 
             }, select: {
                 channelconfig: {
@@ -14,17 +14,10 @@ export async function redispayload(userid: number) {
                         config: true,
 
                     }
-                },
-                notificationmessage: {
-                    select: {
-                        message: true,
-                        USERID: true,
-                        id: true
-                    }
-                },
+                }
             },
         })
-        console.log(UserData)
+        console.log(UserData?.channelconfig.forEach((d) => { console.log(d) }))
         return UserData
     } catch (error) {
         console.log(error)

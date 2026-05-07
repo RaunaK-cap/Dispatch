@@ -90,7 +90,7 @@ export const notification_message = async (req: Request, res: Response) => {
         })
 
         if (response.id) {
-            await redispayload(response.USERID)
+            await redispayload(response.USERID, response.message, response.id)
         }
 
         res.status(200).json({
