@@ -42,3 +42,59 @@ export async function xaddbulk(notificationData: { channelName: string; config: 
         results,
     );
 }
+
+export async function ensureConsumerGroup(consumergroup: string) {
+    try {
+        await client.xGroupCreate("STREAM_NAME", consumergroup, "0", {
+            MKSTREAM: true,
+        });
+    } catch (error) {
+        if (error instanceof Error && error.message.includes("BUSYGROUP")) {
+            return;
+        }
+
+        throw error;
+    }
+}
+
+type messageType = {
+    id: string;
+    message: {
+        url: string;
+        id: string;
+    };
+    //@ts-ignore
+};
+
+
+//@ts-ignore
+export async function Xreadgroups(
+    consumergroup: string,
+    workingId: string,
+): Promise<messageType[] | undefined> {
+
+    const res = await client.xReadGroup(
+        consumergroup,
+        workingId,
+        {
+            key: "STREAM_NAME",
+            id: ">",
+        },
+        {
+            COUNT: 5,
+            BLOCK: 5000,
+        },
+    );
+
+    //@ts-ignore
+    const message = res?.[0]?.messages;
+    return message;
+}
+
+export async function Xack(consumergroup: string, eventID: string) {
+    await client.xAck("STREAM_NAME", consumergroup, eventID);
+}
+
+export async function XackBulk(consumergroup: string, eventIDs: string[]) {
+    await Promise.all(eventIDs.map((eventID) => Xack(consumergroup, eventID)));
+}
