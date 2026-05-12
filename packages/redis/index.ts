@@ -45,7 +45,7 @@ export async function xaddbulk(notificationData: { channelName: string; config: 
 
 export async function ensureConsumerGroup(consumergroup: string) {
     try {
-        await client.xGroupCreate("STREAM_NAME", consumergroup, "0", {
+        await client.xGroupCreate("NOTIFY", consumergroup, "0", {
             MKSTREAM: true,
         });
     } catch (error) {
@@ -77,7 +77,7 @@ export async function Xreadgroups(
         consumergroup,
         workingId,
         {
-            key: "STREAM_NAME",
+            key: "NOTIFY",
             id: ">",
         },
         {
@@ -92,7 +92,7 @@ export async function Xreadgroups(
 }
 
 export async function Xack(consumergroup: string, eventID: string) {
-    await client.xAck("STREAM_NAME", consumergroup, eventID);
+    await client.xAck("NOTIFY", consumergroup, eventID);
 }
 
 export async function XackBulk(consumergroup: string, eventIDs: string[]) {
