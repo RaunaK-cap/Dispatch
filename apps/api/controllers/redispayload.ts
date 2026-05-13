@@ -24,24 +24,17 @@ export async function redispayload(USERID: number, message: string, id: number) 
                 }
             },
         })
-        console.log(UserData?.channelconfig.forEach((d) => { console.log(d) }))
-        console.log(message, id, USERID)
 
-        try {
+        UserData?.channelconfig.forEach((data) => {
+            xaddbulk([{
+                channelName: data.channel,
+                config: String(data.config),
+                message: message,
+                messageID: String(id),
+                UserID: String(USERID)
+            }])
 
-            UserData?.channelconfig.forEach((data) => {
-                xaddbulk([{
-                    channelName: data.channel,
-                    config: String(data.config),
-                    message: message,
-                    messageID: String(id),
-                    UserID: String(USERID)
-                }])
-
-            })
-        } catch (e) {
-
-        }
+        })
 
         return UserData
 
