@@ -81,13 +81,14 @@ export async function Xreadgroups(
             id: ">",
         },
         {
-            COUNT: 5,
+            COUNT: 6,
             BLOCK: 5000,
         },
     );
 
     //@ts-ignore
     const message = res?.[0]?.messages;
+    console.log(message)
     return message;
 }
 

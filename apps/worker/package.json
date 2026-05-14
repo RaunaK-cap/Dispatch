@@ -7,7 +7,9 @@
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5",
+    "db": "*",
+    "redis-queue": "*"
   },
   "dependencies": {
     "express": "^5.2.1",
