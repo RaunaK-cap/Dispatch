@@ -44,6 +44,7 @@ export async function xaddbulk(notificationData: { channelName: string; config: 
 }
 
 export async function ensureConsumerGroup(consumergroup: string) {
+
     try {
         await client.xGroupCreate("NOTIFY", consumergroup, "0", {
             MKSTREAM: true,
